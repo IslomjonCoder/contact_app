@@ -51,25 +51,28 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
               icon: Icon(Icons.done))
         ],
       ),
-      body: Column(
-        children: [
-          InputTextField(
-            label: 'Name',
-            hint: 'Enter name',
-            controller: nameController,
-          ),
-          InputTextField(
-            label: 'Surname',
-            hint: 'Enter surname',
-            controller: surnameController,
-          ),
-          InputTextField(
-            label: 'Phone number',
-            hint: '+998  _ _   _ _ _   _ _   _ _',
-            inputType: TextInputType.phone,
-            controller: phoneController,
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            InputTextField(
+              label: 'Name',
+              hint: 'Enter name',
+              controller: nameController,
+            ),
+            InputTextField(
+              label: 'Surname',
+              hint: 'Enter surname',
+              controller: surnameController,
+            ),
+            InputTextField(
+              label: 'Phone number',
+              hint: '+998  _ _   _ _ _   _ _   _ _',
+              inputType: TextInputType.phone,
+              controller: phoneController,
+            ),
+          ],
+        ),
       ),
     );
   }

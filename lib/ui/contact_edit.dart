@@ -4,23 +4,25 @@ import 'package:untitled12/reposityory/contact_repository.dart';
 import 'package:untitled12/ui/contact_screen.dart';
 import 'package:untitled12/ui/widgets/custom_input_widget.dart';
 
-class ContactAddScreen extends StatefulWidget {
-  ContactAddScreen({Key? key}) : super(key: key);
-  // Contact? contact;
+class ContactEditScreen extends StatefulWidget {
+  ContactEditScreen({Key? key, required this.contact}) : super(key: key);
+  Contact contact;
+
   @override
-  State<ContactAddScreen> createState() => _ContactAddScreenState();
+  State<ContactEditScreen> createState() => _ContactEditScreenState();
 }
 
-class _ContactAddScreenState extends State<ContactAddScreen> {
+class _ContactEditScreenState extends State<ContactEditScreen> {
   TextEditingController nameController = TextEditingController();
 
   TextEditingController surnameController = TextEditingController();
 
   TextEditingController phoneController = TextEditingController();
-
   @override
   void initState() {
-    // nameController.text = widget.contact.name;
+    nameController.text = widget.contact.name;
+    surnameController.text = widget.contact.surname;
+    phoneController.text = widget.contact.phoneNumber;
   }
 
   @override
