@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled12/models/contact.dart';
-import 'package:untitled12/reposityory/contact_repository.dart';
+import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_screen.dart';
 import 'package:untitled12/ui/widgets/custom_input_widget.dart';
 
@@ -18,6 +18,7 @@ class _ContactEditScreenState extends State<ContactEditScreen> {
   TextEditingController surnameController = TextEditingController();
 
   TextEditingController phoneController = TextEditingController();
+
   @override
   void initState() {
     nameController.text = widget.contact.name;
@@ -29,16 +30,19 @@ class _ContactEditScreenState extends State<ContactEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add'),
+        title: Text('Update'),
         actions: [
           IconButton(
               onPressed: () {
                 if (nameController.text.length > 0 &&
                     phoneController.text.length > 0) {
-                  DatabaseHelper.insertContact(Contact(
-                      name: nameController.text,
-                      surname: surnameController.text,
-                      phoneNumber: phoneController.text));
+                  DatabaseHelper.updateContact(Contact(
+                    id: widget.contact.id,
+                    name: nameController.text,
+                    surname: surnameController.text,
+                    phoneNumber: phoneController.text,
+                  ));
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pushReplacement(
                       context,

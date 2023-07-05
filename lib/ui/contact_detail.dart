@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled12/models/contact.dart';
-import 'package:untitled12/reposityory/contact_repository.dart';
+import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_edit.dart';
+import 'package:untitled12/ui/contact_screen.dart';
 
 class ContactDetail extends StatelessWidget {
   ContactDetail({Key? key, required this.contact}) : super(key: key);
@@ -40,12 +41,54 @@ class ContactDetail extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () {
-                            DatabaseHelper.deleteContact(contact.id!);
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Delete contact'),
+                                content: Text(
+                                    'Are you sure you want to remove ${contact.name + ' ' + contact.surname} from your contacts?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        DatabaseHelper.deleteContact(
+                                            contact.id!);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('No')),
+                                  TextButton(
+                                      onPressed: () {
+                                        // DatabaseHelper.deleteContacts();
+                                        DatabaseHelper.deleteContact(
+                                            contact.id!);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ContactScreen(),
+                                            ));
+                                      },
+                                      child: Text(
+                                        'Yes',
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                ],
+                              ),
+                            );
                           },
-                          icon: Icon(Icons.delete)),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.black,
+                          )),
                       IconButton(
                           onPressed: () {
-                            ContactEditScreen(contact: contact);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ContactEditScreen(contact: contact),
+                                ));
                           },
                           icon: Icon(
                             Icons.edit,
@@ -77,33 +120,25 @@ class ContactDetail extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.green),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.phone,
-                          color: Colors.white,
-                        ),
+                    FloatingActionButton.small(
+                      heroTag: 'call',
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.phone,
+                        color: Colors.white,
                       ),
+                      backgroundColor: Colors.green,
                     ),
                     SizedBox(width: 15),
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.orange),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.chat,
-                          color: Colors.white,
-                        ),
+                    FloatingActionButton.small(
+                      heroTag: 'message',
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.chat,
+                        color: Colors.white,
                       ),
-                    ),
+                      backgroundColor: Color(0xFFe9ad13),
+                    )
                   ],
                 ),
               ],

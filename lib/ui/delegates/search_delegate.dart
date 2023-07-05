@@ -59,11 +59,11 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     List<Contact> matchQuery = [];
-    for (var fruit in contacts) {
-      if ((fruit.name + " " + fruit.surname)
+    for (var contact in contacts) {
+      if ((contact.name + " " + contact.surname)
           .toLowerCase()
           .contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
+        matchQuery.add(contact);
       }
     }
     return ListView.builder(

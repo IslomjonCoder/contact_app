@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:untitled12/utils/colors.dart';
 
 class InputTextField extends StatelessWidget {
@@ -6,6 +7,7 @@ class InputTextField extends StatelessWidget {
   String hint;
   TextInputType? inputType;
   TextEditingController? controller;
+  List<TextInputFormatter>? inputFormatters;
 
   InputTextField({
     Key? key,
@@ -13,6 +15,7 @@ class InputTextField extends StatelessWidget {
     required this.hint,
     this.controller,
     this.inputType,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -25,6 +28,7 @@ class InputTextField extends StatelessWidget {
           Text(label),
           SizedBox(height: 5),
           TextField(
+            inputFormatters: inputFormatters,
             controller: controller,
             keyboardType: inputType,
             decoration: InputDecoration(

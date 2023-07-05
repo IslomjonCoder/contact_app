@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:untitled12/models/contact.dart';
-import 'package:untitled12/reposityory/contact_repository.dart';
+import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_screen.dart';
 import 'package:untitled12/ui/widgets/custom_input_widget.dart';
 
@@ -20,6 +21,8 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
 
   @override
   void initState() {
+    super.initState();
+
     // nameController.text = widget.contact.name;
   }
 
@@ -70,6 +73,12 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
               hint: '+998  _ _   _ _ _   _ _   _ _',
               inputType: TextInputType.phone,
               controller: phoneController,
+              inputFormatters: [
+                MaskTextInputFormatter(
+                  mask: '+998 ## ### ## ##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                )
+              ],
             ),
           ],
         ),

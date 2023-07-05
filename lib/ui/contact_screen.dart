@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:untitled12/models/contact.dart';
-import 'package:untitled12/reposityory/contact_repository.dart';
+import 'package:untitled12/repository/contact_repository.dart';
+import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_add.dart';
 import 'package:untitled12/ui/contact_detail.dart';
 import 'package:untitled12/ui/widgets/custom_searchbar.dart';
@@ -35,7 +37,11 @@ class _ContactScreenState extends State<ContactScreen> {
       appBar: AppBar(
         title: Text('Contacts'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+          IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearchDelegate());
+              },
+              icon: Icon(Icons.search)),
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -44,8 +50,36 @@ class _ContactScreenState extends State<ContactScreen> {
               PopupMenuItem(
                   child: Text("Delete all"),
                   onTap: () {
-                    DatabaseHelper.deleteContacts();
+                    Future.delayed(
+                        Duration(seconds: 0),
+                        () => showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Delete everything?'),
+                                content: Text(
+                                    'Are you sure you want to remove everything'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('No')),
+                                  TextButton(
+                                      onPressed: () {
+                                        DatabaseHelper.deleteContacts();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'Yes',
+                                        style: TextStyle(color: Colors.red),
+                                      )),
+                                ],
+                              ),
+                            ));
                     setState(() {});
+
+                    // DatabaseHelper.deleteContacts();
+                    // setState(() {});
                   }),
             ],
           )
@@ -58,21 +92,31 @@ class _ContactScreenState extends State<ContactScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
             final data = snapshot.data!;
-            return ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(data[index].name + " " + data[index].surname),
-                subtitle: Text(data[index].phoneNumber),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ContactDetail(contact: data[index]),
-                      ));
-                },
-              ),
-            );
+            return (data.length == 0)
+                ? Center(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LottieBuilder.asset(
+                          'assets/lottie/116469-no-item-in-box.json'),
+                      Text('no data'),
+                    ],
+                  ))
+                : ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(data[index].name + " " + data[index].surname),
+                      subtitle: Text(data[index].phoneNumber),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ContactDetail(contact: data[index]),
+                            ));
+                      },
+                    ),
+                  );
           }
           return Center(child: Text('error'));
         },

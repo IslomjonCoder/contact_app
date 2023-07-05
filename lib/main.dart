@@ -13,6 +13,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.black,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.black,
+          ),
+          iconTheme: IconThemeData(color: Colors.white)),
       home: ContactScreen(),
     );
   }
