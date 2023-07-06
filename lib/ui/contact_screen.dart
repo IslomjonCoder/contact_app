@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:untitled12/models/contact.dart';
 import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_add.dart';
 import 'package:untitled12/ui/contact_detail.dart';
 import 'package:untitled12/ui/widgets/custom_searchbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -39,6 +42,18 @@ class _ContactScreenState extends State<ContactScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                return showTopSnackBar(
+                  snackBarPosition: SnackBarPosition.bottom,
+                  Overlay.of(context),
+                  CustomSnackBar.success(
+                    message:
+                        "Good job, your release is successful. Have a nice day",
+                  ),
+                );
+              },
+              icon: Icon(Icons.notifications)),
+          IconButton(
+              onPressed: () {
                 showSearch(context: context, delegate: CustomSearchDelegate());
               },
               icon: Icon(Icons.search)),
@@ -48,7 +63,10 @@ class _ContactScreenState extends State<ContactScreen> {
                 child: Text("Sort by"),
               ),
               PopupMenuItem(
-                  child: Text("Delete all"),
+                  child: Text(
+                    "Delete all",
+                    style: TextStyle(color: Colors.red),
+                  ),
                   onTap: () {
                     Future.delayed(
                         Duration(seconds: 0),
@@ -68,6 +86,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                       onPressed: () {
                                         DatabaseHelper.deleteContacts();
                                         Navigator.pop(context);
+                                        setState(() {});
                                       },
                                       child: Text(
                                         'Yes',
@@ -107,6 +126,15 @@ class _ContactScreenState extends State<ContactScreen> {
                     itemBuilder: (context, index) => ListTile(
                       title: Text(data[index].name + " " + data[index].surname),
                       subtitle: Text(data[index].phoneNumber),
+                      trailing: IconButton(
+                        onPressed: () {
+                          launch('tel:${data[index].phoneNumber}');
+                        },
+                        icon: Icon(
+                          Icons.call,
+                          color: Colors.green,
+                        ),
+                      ),
                       onTap: () {
                         Navigator.push(
                             context,

@@ -58,6 +58,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    print('ok');
     List<Contact> matchQuery = [];
     for (var fruit in contacts) {
       if ((fruit.name + " " + fruit.surname)

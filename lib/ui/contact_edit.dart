@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:untitled12/models/contact.dart';
 import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_screen.dart';
@@ -23,7 +24,7 @@ class _ContactEditScreenState extends State<ContactEditScreen> {
   void initState() {
     nameController.text = widget.contact.name;
     surnameController.text = widget.contact.surname;
-    phoneController.text = widget.contact.phoneNumber;
+    phoneController.text = widget.contact.phoneNumber.substring(4);
   }
 
   @override
@@ -32,50 +33,65 @@ class _ContactEditScreenState extends State<ContactEditScreen> {
       appBar: AppBar(
         title: Text('Update'),
         actions: [
-          IconButton(
-              onPressed: () {
-                if (nameController.text.length > 0 &&
-                    phoneController.text.length > 0) {
-                  DatabaseHelper.updateContact(Contact(
-                    id: widget.contact.id,
-                    name: nameController.text,
-                    surname: surnameController.text,
-                    phoneNumber: phoneController.text,
-                  ));
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContactScreen(),
-                      ));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fields are empty')));
-                }
-              },
-              icon: Icon(Icons.done))
+          TextButton(
+            onPressed: () {
+              if (nameController.text.length > 0 &&
+                  phoneController.text.length > 0) {
+                DatabaseHelper.updateContact(Contact(
+                  id: widget.contact.id,
+                  name: nameController.text,
+                  surname: surnameController.text,
+                  phoneNumber: "+998 " + phoneController.text,
+                ));
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactScreen(),
+                    ));
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Fields are empty')));
+              }
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          )
         ],
       ),
-      body: Column(
-        children: [
-          InputTextField(
-            label: 'Name',
-            hint: 'Enter name',
-            controller: nameController,
-          ),
-          InputTextField(
-            label: 'Surname',
-            hint: 'Enter surname',
-            controller: surnameController,
-          ),
-          InputTextField(
-            label: 'Phone number',
-            hint: '+998  _ _   _ _ _   _ _   _ _',
-            inputType: TextInputType.phone,
-            controller: phoneController,
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            InputTextField(
+              label: 'Name',
+              hint: 'Enter name',
+              controller: nameController,
+            ),
+            InputTextField(
+              label: 'Surname',
+              hint: 'Enter surname',
+              controller: surnameController,
+            ),
+            InputTextField(
+              label: 'Phone number',
+              hint: '_ _   _ _ _   _ _   _ _',
+              inputType: TextInputType.phone,
+              controller: phoneController,
+              actionType: TextInputAction.done,
+              inputFormatters: [
+                MaskTextInputFormatter(
+                  mask: '## ### ## ##',
+                  filter: {"#": RegExp(r'[0-9]')},
+                )
+              ],
+              prefixText: "+998",
+            ),
+          ],
+        ),
       ),
     );
   }

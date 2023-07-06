@@ -8,6 +8,8 @@ class InputTextField extends StatelessWidget {
   TextInputType? inputType;
   TextEditingController? controller;
   List<TextInputFormatter>? inputFormatters;
+  String? prefixText;
+  TextInputAction actionType;
 
   InputTextField({
     Key? key,
@@ -16,6 +18,8 @@ class InputTextField extends StatelessWidget {
     this.controller,
     this.inputType,
     this.inputFormatters,
+    this.prefixText,
+    this.actionType = TextInputAction.next,
   }) : super(key: key);
 
   @override
@@ -28,10 +32,19 @@ class InputTextField extends StatelessWidget {
           Text(label),
           SizedBox(height: 5),
           TextField(
+            focusNode: FocusNode(),
             inputFormatters: inputFormatters,
             controller: controller,
+            textInputAction: actionType,
             keyboardType: inputType,
             decoration: InputDecoration(
+              prefixIcon: (prefixText != null)
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      child: Text(prefixText!),
+                    )
+                  : null,
               hintText: hint,
               filled: true,
               fillColor: ColorsApp.c_FAFAFA,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled12/ui/contact_add.dart';
+import 'package:untitled12/ui/contact_edit.dart';
 import 'package:untitled12/ui/contact_screen.dart';
 
 void main() {
@@ -23,6 +24,19 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: IconThemeData(color: Colors.white)),
       home: ContactScreen(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/add':
+            return MaterialPageRoute(
+              builder: (context) => ContactAddScreen(),
+            );
+            return Scaffold(
+              body: Center(
+                child: Text('Url not found'),
+              ),
+            );
+        }
+      },
     );
   }
 }

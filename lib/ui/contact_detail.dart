@@ -3,6 +3,7 @@ import 'package:untitled12/models/contact.dart';
 import 'package:untitled12/repository/contact_repository.dart';
 import 'package:untitled12/ui/contact_edit.dart';
 import 'package:untitled12/ui/contact_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactDetail extends StatelessWidget {
   ContactDetail({Key? key, required this.contact}) : super(key: key);
@@ -122,7 +123,9 @@ class ContactDetail extends StatelessWidget {
                   children: [
                     FloatingActionButton.small(
                       heroTag: 'call',
-                      onPressed: () {},
+                      onPressed: () async {
+                        launch('tel:${contact.phoneNumber}');
+                      },
                       child: Icon(
                         Icons.phone,
                         color: Colors.white,
@@ -132,7 +135,9 @@ class ContactDetail extends StatelessWidget {
                     SizedBox(width: 15),
                     FloatingActionButton.small(
                       heroTag: 'message',
-                      onPressed: () {},
+                      onPressed: () {
+                        launch(' sms:${contact.phoneNumber}');
+                      },
                       child: Icon(
                         Icons.chat,
                         color: Colors.white,

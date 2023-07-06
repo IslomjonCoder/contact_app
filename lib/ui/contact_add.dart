@@ -7,6 +7,7 @@ import 'package:untitled12/ui/widgets/custom_input_widget.dart';
 
 class ContactAddScreen extends StatefulWidget {
   ContactAddScreen({Key? key}) : super(key: key);
+
   // Contact? contact;
   @override
   State<ContactAddScreen> createState() => _ContactAddScreenState();
@@ -32,26 +33,30 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
       appBar: AppBar(
         title: Text('Add'),
         actions: [
-          IconButton(
-              onPressed: () {
-                if (nameController.text.length > 0 &&
-                    phoneController.text.length > 0) {
-                  DatabaseHelper.insertContact(Contact(
-                      name: nameController.text,
-                      surname: surnameController.text,
-                      phoneNumber: phoneController.text));
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContactScreen(),
-                      ));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fields are empty')));
-                }
-              },
-              icon: Icon(Icons.done))
+          TextButton(
+            onPressed: () {
+              if (nameController.text.length > 0 &&
+                  phoneController.text.length > 0) {
+                DatabaseHelper.insertContact(Contact(
+                    name: nameController.text,
+                    surname: surnameController.text,
+                    phoneNumber: "+998 " + phoneController.text));
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactScreen(),
+                    ));
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Fields are empty')));
+              }
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          )
         ],
       ),
       body: Padding(
@@ -62,6 +67,7 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
               label: 'Name',
               hint: 'Enter name',
               controller: nameController,
+              actionType: TextInputAction.next,
             ),
             InputTextField(
               label: 'Surname',
@@ -70,15 +76,17 @@ class _ContactAddScreenState extends State<ContactAddScreen> {
             ),
             InputTextField(
               label: 'Phone number',
-              hint: '+998  _ _   _ _ _   _ _   _ _',
+              hint: '_ _   _ _ _   _ _   _ _',
               inputType: TextInputType.phone,
               controller: phoneController,
+              actionType: TextInputAction.done,
               inputFormatters: [
                 MaskTextInputFormatter(
-                  mask: '+998 ## ### ## ##',
+                  mask: '## ### ## ##',
                   filter: {"#": RegExp(r'[0-9]')},
                 )
               ],
+              prefixText: "+998",
             ),
           ],
         ),
